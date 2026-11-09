@@ -52,13 +52,14 @@
       background: var(--bg-card);
       color: var(--text-muted);
       border: 1px solid var(--border-color);
-      padding: 7px 2px;
+      padding: 8px 4px;
       font-size: 11px;
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
       text-align: center;
       transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .tab-btn.active {
@@ -85,7 +86,7 @@
       background: var(--bg-card);
       color: var(--text-main);
       border: 1px solid var(--border-color);
-      padding: 7px 10px;
+      padding: 8px 10px;
       font-size: 12px;
       border-radius: 6px;
       outline: none;
@@ -163,16 +164,16 @@
     
     <!-- Abas de Navegação -->
     <div class="tabs-container">
-      <button type="button" onclick="mudarAba('agora')" id="btn-agora" class="tab-btn live-tab active">🔴 Agora</button>
-      <button type="button" onclick="mudarAba('dia9')" id="btn-dia9" class="tab-btn">09 Jul</button>
-      <button type="button" onclick="mudarAba('dia10')" id="btn-dia10" class="tab-btn">10 Jul</button>
-      <button type="button" onclick="mudarAba('dia11')" id="btn-dia11" class="tab-btn">11 Jul</button>
-      <button type="button" onclick="mudarAba('dia12')" id="btn-dia12" class="tab-btn">12 Jul</button>
+      <button type="button" class="tab-btn live-tab active" data-tab="agora">🔴 Agora</button>
+      <button type="button" class="tab-btn" data-tab="dia9">09 Jul</button>
+      <button type="button" class="tab-btn" data-tab="dia10">10 Jul</button>
+      <button type="button" class="tab-btn" data-tab="dia11">11 Jul</button>
+      <button type="button" class="tab-btn" data-tab="dia12">12 Jul</button>
     </div>
 
     <!-- Filtro por Local -->
     <div class="filter-container">
-      <select id="filtroLocal" class="filter-select" onchange="renderizarEventos()">
+      <select id="filtroLocal" class="filter-select">
         <option value="todos">📍 Todos os Locais</option>
         <option value="Vila Templária">Vila Templária</option>
         <option value="Praça da República">Praça da República</option>
@@ -246,17 +247,6 @@
 
     let abaAtual = 'agora';
 
-    function mudarAba(aba) {
-      abaAtual = aba;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
-      const btnAtivo = document.getElementById('btn-' + aba);
-      if (btnAtivo) {
-        btnAtivo.classList.add('active');
-      }
-      renderizarEventos();
-    }
-
     function renderizarEventos() {
       const container = document.getElementById('lista-eventos');
       const selectElement = document.getElementById('filtroLocal');
@@ -265,7 +255,6 @@
 
       let filtrados = eventos;
 
-      // Filtrar por aba ativa
       if (abaAtual === 'agora') {
         filtrados = eventos.filter(ev => {
           const inicio = new Date(ev.inicio);
@@ -276,7 +265,6 @@
         filtrados = eventos.filter(ev => ev.dia === abaAtual);
       }
 
-      // Filtrar por local selecionado
       if (localFiltro !== 'todos') {
         filtrados = filtrados.filter(ev => ev.local.toLowerCase() === localFiltro.toLowerCase());
       }
@@ -320,12 +308,26 @@
       container.innerHTML = html;
     }
 
-    // Inicialização ao carregar a página
-    window.onload = function() {
-      renderizarEventos();
-    };
+    // Configurar escuta de cliques robusta para evitar bloqueios de iframe
+    document.addEventListener('DOMContentLoaded', () => {
+      const botoes = document.querySelectorAll('.tab-btn');
+      botoes.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          botoes.forEach(b => b.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+          abaAtual = e.currentTarget.getAttribute('data-tab');
+          renderizarEventos();
+        });
+      });
 
-    // Atualização automática a cada 30 segundos
+      const filtro = document.getElementById('filtroLocal');
+      if (filtro) {
+        filtro.addEventListener('change', renderizarEventos);
+      }
+
+      renderizarEventos();
+    });
+
     setInterval(renderizarEventos, 30000);
   </script>
 </body>
