@@ -1,170 +1,305 @@
-<div style="background-color: #121212; color: #ffffff; padding: 16px; border-radius: 8px; max-width: 360px; margin: 0 auto; font-family: sans-serif; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-  
-  <h2 style="color: #D4AF37; font-size: 18px; margin: 0 0 12px 0; border-bottom: 2px solid #A81C1C; padding-bottom: 6px; text-align: center;">
-    ⚔️ Festa Templária 2026
-  </h2>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programa - Festa Templária 2026</title>
+  <style>
+    :root {
+      --bg-main: #1e1e1e;
+      --bg-card: #2a2a2a;
+      --border-color: #444444;
+      --gold: #D4AF37;
+      --gold-light: #f3d675;
+      --text-main: #ffffff;
+      --text-muted: #b0b0b0;
+      --accent-live: #27ae60; /* Verde vivo para o "A decorrer agora" */
+    }
 
-  <!-- Seletor de Dias (Abas) -->
-  <div style="display: flex; justify-content: space-between; margin-bottom: 12px; gap: 4px;">
-    <button onclick="mudarDia('dia9')" id="btn-dia9" class="tab-btn active" style="flex: 1; background: #A81C1C; color: #fff; border: none; padding: 6px 4px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer;">09 Jul</button>
-    <button onclick="mudarDia('dia10')" id="btn-dia10" class="tab-btn" style="flex: 1; background: #1a1a1a; color: #ccc; border: 1px solid #333; padding: 6px 4px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer;">10 Jul</button>
-    <button onclick="mudarDia('dia11')" id="btn-dia11" class="tab-btn" style="flex: 1; background: #1a1a1a; color: #ccc; border: 1px solid #333; padding: 6px 4px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer;">11 Jul</button>
-    <button onclick="mudarDia('dia12')" id="btn-dia12" class="tab-btn" style="flex: 1; background: #1a1a1a; color: #ccc; border: 1px solid #333; padding: 6px 4px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer;">12 Jul</button>
-  </div>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  <!-- CONTEÚDO DOS DIAS -->
-  <div id="conteudo-dias" style="max-height: 400px; overflow-y: auto; padding-right: 4px;">
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 8px;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Seletor de Abas (Dias + "Agora") */
+    .tabs-container {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 65px;
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 8px 4px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--gold);
+      color: #121212;
+      border-color: var(--gold);
+    }
+
+    .tab-btn.live-tab {
+      border-color: var(--accent-live);
+    }
+    .tab-btn.live-tab.active {
+      background: var(--accent-live);
+      color: #fff;
+    }
+
+    /* Filtro por Local */
+    .filter-container {
+      margin-bottom: 10px;
+    }
+
+    .filter-select {
+      width: 100%;
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 8px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .filter-select:focus {
+      border-color: var(--gold);
+    }
+
+    /* Lista de Eventos */
+    .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .evento-item {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--gold);
+      padding: 10px;
+      border-radius: 6px;
+      transition: transform 0.1s;
+    }
+
+    .evento-item.is-live {
+      border-left-color: var(--accent-live);
+      background-color: #243428;
+    }
+
+    .evento-hora {
+      font-size: 11px;
+      color: var(--gold-light);
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+
+    .evento-local {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .evento-titulo {
+      font-size: 13px;
+      color: var(--text-main);
+      font-weight: bold;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .no-events {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
     
-    <!-- DIA 09 JULHO -->
-    <div id="dia9" class="dia-content">
-      <div class="evento-item" data-inicio="2026-07-09T17:00:00" data-fim="2026-07-09T19:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">17:00 | Convento de Cristo</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Conferência "A Fundação do Castelo"</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-09T19:00:00" data-fim="2026-07-09T20:30:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">19:00 | Praça da República</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Cortejo de Abertura & Recriação Histórica[cite: 3, 4]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-09T20:30:00" data-fim="2026-07-09T23:59:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">20:30 | Refeitório Vila Templária</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Jantar Templário[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-09T22:00:00" data-fim="2026-07-09T23:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">22:00 | Palco Liça</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">O Julgamento na Liça[cite: 3, 4]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-09T22:00:00" data-fim="2026-07-09T23:59:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">22:00 - 00:00 | Rio Nabão</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Fire Dragons (Sessões contínuas)[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
+    <!-- Abas de Navegação -->
+    <div class="tabs-container">
+      <button onclick="mudarAba('agora')" id="btn-agora" class="tab-btn live-tab active">🔴 Agora</button>
+      <button onclick="mudarAba('dia9')" id="btn-dia9" class="tab-btn">09 Jul</button>
+      <button onclick="mudarAba('dia10')" id="btn-dia10" class="tab-btn">10 Jul</button>
+      <button onclick="mudarAba('dia11')" id="btn-dia11" class="tab-btn">11 Jul</button>
+      <button onclick="mudarAba('dia12')" id="btn-dia12" class="tab-btn">12 Jul</button>
     </div>
 
-    <!-- DIA 10 JULHO -->
-    <div id="dia10" class="dia-content" style="display: none;">
-      <div class="evento-item" data-inicio="2026-07-10T10:00:00" data-fim="2026-07-10T13:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">10:00 | Várzea Grande</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Cortejo Templário Infantil[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-10T19:00:00" data-fim="2026-07-10T21:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">19:00 | Palco Liça</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Torneio de Armas e O Voo das Aves[cite: 3]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-10T22:00:00" data-fim="2026-07-10T23:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">22:00 | Palco Liça</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">O Julgamento na Liça[cite: 3, 4]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-10T23:00:00" data-fim="2026-07-10T23:59:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">23:00 | Palco Principal</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Concerto Albaluna[cite: 3, 4]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
+    <!-- Filtro por Local -->
+    <div class="filter-container">
+      <select id="filtroLocal" class="filter-select" onchange="filtrarEventos()">
+        <option value="todos">📍 Todos os Locais</option>
+        <option value="Convento de Cristo">Convento de Cristo</option>
+        <option value="Praça da República">Praça da República</option>
+        <option value="Vila Templária">Vila Templária</option>
+        <option value="Palco Liça">Palco Liça</option>
+        <option value="Palco Principal">Palco Principal</option>
+        <option value="Rio Nabão">Rio Nabão</option>
+        <option value="Porta de Santiago">Porta de Santiago</option>
+        <option value="Vários Locais">Vários Locais</option>
+      </select>
     </div>
 
-    <!-- DIA 11 JULHO -->
-    <div id="dia11" class="dia-content" style="display: none;">
-      <div class="evento-item" data-inicio="2026-07-11T10:00:00" data-fim="2026-07-11T13:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">10:00 & 12:00 | Porta de Santiago</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Visitas Culturais Encenadas[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-11T16:16:00" data-fim="2026-07-11T19:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">16:16 - 18:18 | Vários Locais</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Lugares com História ("Da Utopia à Extinção")[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-11T22:00:00" data-fim="2026-07-11T23:59:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">22:00 | Castelo e S. M. do Olival</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Grande Cortejo Noturno[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-    </div>
-
-    <!-- DIA 12 JULHO -->
-    <div id="dia12" class="dia-content" style="display: none;">
-      <div class="evento-item" data-inicio="2026-07-12T10:00:00" data-fim="2026-07-12T13:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">10:00 & 12:00 | Porta de Santiago</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Visitas Culturais Encenadas[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
-
-      <div class="evento-item" data-inicio="2026-07-12T18:00:00" data-fim="2026-07-12T20:00:00" style="background-color: #1a1a1a; border: 1px solid #333; padding: 10px; margin-bottom: 8px; border-radius: 6px;">
-        <div style="font-size: 11px; color: #D4AF37; font-weight: bold;">18:00 | Vila Templária</div>
-        <div style="font-size: 13px; margin: 3px 0; color: #fff; font-weight: bold;">Cortejo de Encerramento[cite: 4, 5]</div>
-        <div class="status-badge" style="display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: bold; margin-top: 4px;">A verificar...</div>
-      </div>
+    <!-- Lista Dinâmica -->
+    <div id="lista-eventos" class="events-list">
+      <!-- Inserido dinamicamente via JS -->
     </div>
 
   </div>
-</div>
 
-<!-- MOTOR JAVASCRIPT EM TEMPO REAL -->
-<script>
-  function mudarDia(diaId) {
-    // Oculta todos os conteúdos
-    document.querySelectorAll('.dia-content').forEach(el => el.style.display = 'none');
-    // Mostra o selecionado
-    document.getElementById(diaId).style.display = 'block';
+  <script>
+    // Base de dados completa dos eventos da Festa Templária 2026
+    const eventos = [
+      // DIA 9
+      { id: 1, dia: 'dia9', inicio: '2026-07-09T17:00:00', fim: '2026-07-09T19:00:00', local: 'Convento de Cristo', titulo: 'Conferência "A Fundação do Castelo"' },
+      { id: 2, dia: 'dia9', inicio: '2026-07-09T19:00:00', fim: '2026-07-09T20:30:00', local: 'Praça da República', titulo: 'Cortejo de Abertura & Recriação Histórica' },
+      { id: 3, dia: 'dia9', inicio: '2026-07-09T20:30:00', fim: '2026-07-09T23:59:00', local: 'Vila Templária', titulo: 'Jantar Templário (Refeitório)' },
+      { id: 4, dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
+      { id: 5, dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T23:59:00', local: 'Rio Nabão', titulo: 'Fire Dragons (Sessões contínuas)' },
 
-    // Atualiza o estilo dos botões
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.style.background = '#1a1a1a';
-      btn.style.color = '#ccc';
-      btn.style.border = '1px solid #333';
-    });
-    const ativo = document.getElementById('btn-' + diaId);
-    ativo.style.background = '#A81C1C';
-    ativo.style.color = '#fff';
-    ativo.style.border = 'none';
-  }
+      // DIA 10
+      { id: 6, dia: 'dia10', inicio: '2026-07-10T10:00:00', fim: '2026-07-10T13:00:00', local: 'Vila Templária', titulo: 'Cortejo Templário Infantil' },
+      { id: 7, dia: 'dia10', inicio: '2026-07-10T19:00:00', fim: '2026-07-10T21:00:00', local: 'Palco Liça', titulo: 'Torneio de Armas e O Voo das Aves' },
+      { id: 8, dia: 'dia10', inicio: '2026-07-10T22:00:00', fim: '2026-07-10T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
+      { id: 9, dia: 'dia10', inicio: '2026-07-10T23:00:00', fim: '2026-07-10T23:59:00', local: 'Palco Principal', titulo: 'Concerto Albaluna' },
 
-  function atualizarEstadosEventos() {
-    const agora = new Date();
-    const itens = document.querySelectorAll('.evento-item');
+      // DIA 11
+      { id: 10, dia: 'dia11', inicio: '2026-07-11T10:00:00', fim: '2026-07-11T13:00:00', local: 'Porta de Santiago', titulo: 'Visitas Culturais Encenadas' },
+      { id: 11, dia: 'dia11', inicio: '2026-07-11T16:16:00', fim: '2026-07-11T19:00:00', local: 'Vários Locais', titulo: 'Lugares com História ("Da Utopia à Extinção")' },
+      { id: 12, dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-11T23:59:00', local: 'Vila Templária', titulo: 'Grande Cortejo Noturno' },
 
-    itens.forEach(item => {
-      const inicio = new Date(item.getAttribute('data-inicio'));
-      const fim = new Date(item.getAttribute('data-fim'));
-      const badge = item.querySelector('.status-badge');
+      // DIA 12
+      { id: 13, dia: 'dia12', inicio: '2026-07-12T10:00:00', fim: '2026-07-12T13:00:00', local: 'Porta de Santiago', titulo: 'Visitas Culturais Encenadas' },
+      { id: 14, dia: 'dia12', inicio: '2026-07-12T18:00:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Cortejo de Encerramento' }
+    ];
 
-      if (agora >= inicio && agora <= fim) {
-        badge.style.backgroundColor = '#A81C1C';
-        badge.style.color = '#ffffff';
-        badge.innerHTML = '🔴 A decorrer agora';
-        item.style.borderColor = '#A81C1C';
-      } else if (agora < inicio) {
-        badge.style.backgroundColor = '#333333';
-        badge.style.color = '#cccccc';
-        badge.innerHTML = '⏳ Em breve';
-        item.style.borderColor = '#333333';
-        item.style.opacity = '1';
+    let abaAtual = 'agora';
+
+    function mudarAba(aba) {
+      abaAtual = aba;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      if (aba === 'agora') {
+        document.getElementById('btn-agora').classList.add('active');
       } else {
-        badge.style.backgroundColor = '#222222';
-        badge.style.color = '#777777';
-        badge.innerHTML = '✔ Terminado';
-        item.style.borderColor = '#222222';
-        item.style.opacity = '0.5';
+        document.getElementById('btn-' + aba).classList.add('active');
       }
-    });
-  }
+      renderizarEventos();
+    }
 
-  // Executa ao carregar e atualiza a cada 30 segundos
-  atualizarEstadosEventos();
-  setInterval(atualizarEstadosEventos, 30000);
-</script>
+    function filtrarEventos() {
+      renderizarEventos();
+    }
+
+    function renderizarEventos() {
+      const container = document.getElementById('lista-eventos');
+      const localFiltro = document.getElementById('filtroLocal').value;
+      const agora = new Date();
+
+      let filtrados = eventos;
+
+      // Filtrar por aba
+      if (abaAtual === 'agora') {
+        filtrados = eventos.filter(ev => {
+          const inicio = new Date(ev.inicio);
+          const fim = new Date(ev.fim);
+          return agora >= inicio && agora <= fim;
+        });
+      } else {
+        filtrados = eventos.filter(ev => ev.dia === abaAtual);
+      }
+
+      // Filtrar por local selecionado
+      if (localFiltro !== 'todos') {
+        filtrados = filtrados.filter(ev => ev.local.toLowerCase() === localFiltro.toLowerCase());
+      }
+
+      if (filtrados.length === 0) {
+        container.innerHTML = `<div class="no-events">Nenhum evento encontrado para esta seleção.</div>`;
+        return;
+      }
+
+      let html = '';
+      filtrados.forEach(ev => {
+        const inicio = new Date(ev.inicio);
+        const fim = new Date(ev.fim);
+        
+        let statusHtml = '';
+        let itemClass = 'evento-item';
+
+        const horaInicioStr = inicio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const horaFimStr = fim.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const dataStr = inicio.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
+
+        if (agora >= inicio && agora <= fim) {
+          itemClass += ' is-live';
+          statusHtml = `<span class="status-badge" style="background-color: #27ae60; color: #fff;">🔴 A decorrer agora</span>`;
+        } else if (agora < inicio) {
+          statusHtml = `<span class="status-badge" style="background-color: #444; color: #ccc;">⏳ Em breve</span>`;
+        } else {
+          statusHtml = `<span class="status-badge" style="background-color: #333; color: #777;">✔ Terminado</span>`;
+        }
+
+        html += `
+          <div class="${itemClass}">
+            <div class="evento-hora">${horaInicioStr} - ${horaFimStr} (${dataStr})</div>
+            <div class="evento-local">📍 ${ev.local}</div>
+            <div class="evento-titulo">${ev.titulo}</div>
+            ${statusHtml}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Atualizar periodicamente
+    renderizarEventos();
+    setInterval(renderizarEventos, 30000);
+  </script>
+</body>
+</html>
