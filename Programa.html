@@ -48,32 +48,30 @@
 
     .tab-btn {
       flex: 1;
-      min-width: 58px;
+      min-width: 55px;
       background: var(--bg-card);
       color: var(--text-muted);
       border: 1px solid var(--border-color);
-      padding: 8px 4px;
+      padding: 8px 2px;
       font-size: 11px;
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
       text-align: center;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
       -webkit-tap-highlight-color: transparent;
     }
 
     .tab-btn.active {
-      background: var(--gold);
-      color: #121212;
-      border-color: var(--gold);
+      background: var(--gold) !important;
+      color: #121212 !important;
+      border-color: var(--gold) !important;
     }
 
-    .tab-btn.live-tab {
-      border-color: var(--accent-live);
-    }
-    .tab-btn.live-tab.active {
-      background: var(--accent-live);
-      color: #fff;
+    .live-tab.active {
+      background: var(--accent-live) !important;
+      color: #fff !important;
+      border-color: var(--accent-live) !important;
     }
 
     /* Filtro por Local */
@@ -164,16 +162,16 @@
     
     <!-- Abas de Navegação -->
     <div class="tabs-container">
-      <button type="button" class="tab-btn live-tab active" data-tab="agora">🔴 Agora</button>
-      <button type="button" class="tab-btn" data-tab="dia9">09 Jul</button>
-      <button type="button" class="tab-btn" data-tab="dia10">10 Jul</button>
-      <button type="button" class="tab-btn" data-tab="dia11">11 Jul</button>
-      <button type="button" class="tab-btn" data-tab="dia12">12 Jul</button>
+      <button type="button" class="tab-btn live-tab active" onclick="mudarAba('agora', this)">🔴 Agora</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia9', this)">09 Jul</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia10', this)">10 Jul</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia11', this)">11 Jul</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia12', this)">12 Jul</button>
     </div>
 
     <!-- Filtro por Local -->
     <div class="filter-container">
-      <select id="filtroLocal" class="filter-select">
+      <select id="filtroLocal" class="filter-select" onchange="renderizarEventos()">
         <option value="todos">📍 Todos os Locais</option>
         <option value="Vila Templária">Vila Templária</option>
         <option value="Praça da República">Praça da República</option>
@@ -247,6 +245,20 @@
 
     let abaAtual = 'agora';
 
+    function mudarAba(aba, elemento) {
+      abaAtual = aba;
+      
+      // Remove a classe active de todos os botões
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      // Adiciona ao botão clicado
+      if (elemento) {
+        elemento.classList.add('active');
+      }
+      
+      renderizarEventos();
+    }
+
     function renderizarEventos() {
       const container = document.getElementById('lista-eventos');
       const selectElement = document.getElementById('filtroLocal');
@@ -308,26 +320,12 @@
       container.innerHTML = html;
     }
 
-    // Configurar escuta de cliques robusta para evitar bloqueios de iframe
-    document.addEventListener('DOMContentLoaded', () => {
-      const botoes = document.querySelectorAll('.tab-btn');
-      botoes.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          botoes.forEach(b => b.classList.remove('active'));
-          e.currentTarget.classList.add('active');
-          abaAtual = e.currentTarget.getAttribute('data-tab');
-          renderizarEventos();
-        });
-      });
-
-      const filtro = document.getElementById('filtroLocal');
-      if (filtro) {
-        filtro.addEventListener('change', renderizarEventos);
-      }
-
+    // Executa ao carregar
+    window.onload = function() {
       renderizarEventos();
-    });
+    };
 
+    // Atualiza periodicamente
     setInterval(renderizarEventos, 30000);
   </script>
 </body>
