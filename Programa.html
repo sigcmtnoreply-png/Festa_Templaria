@@ -6,14 +6,14 @@
   <title>Programa - Festa Templária 2026</title>
   <style>
     :root {
-      --bg-main: #1e1e1e;
-      --bg-card: #2a2a2a;
-      --border-color: #444444;
+      --bg-main: #181818;
+      --bg-card: #242424;
+      --border-color: #383838;
       --gold: #D4AF37;
       --gold-light: #f3d675;
       --text-main: #ffffff;
-      --text-muted: #b0b0b0;
-      --accent-live: #27ae60; /* Verde vivo para o "A decorrer agora" */
+      --text-muted: #b5b5b5;
+      --accent-live: #2ecc71; /* Verde vivo para o "A decorrer agora" */
     }
 
     * {
@@ -26,7 +26,7 @@
       background-color: var(--bg-main);
       color: var(--text-main);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      padding: 8px;
+      padding: 6px;
       width: 100%;
       overflow-x: hidden;
     }
@@ -41,18 +41,18 @@
     .tabs-container {
       display: flex;
       gap: 4px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
     }
 
     .tab-btn {
       flex: 1;
-      min-width: 65px;
+      min-width: 58px;
       background: var(--bg-card);
       color: var(--text-muted);
       border: 1px solid var(--border-color);
-      padding: 8px 4px;
+      padding: 7px 2px;
       font-size: 11px;
       font-weight: bold;
       border-radius: 6px;
@@ -77,7 +77,7 @@
 
     /* Filtro por Local */
     .filter-container {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .filter-select {
@@ -85,7 +85,7 @@
       background: var(--bg-card);
       color: var(--text-main);
       border: 1px solid var(--border-color);
-      padding: 8px 10px;
+      padding: 7px 10px;
       font-size: 12px;
       border-radius: 6px;
       outline: none;
@@ -99,21 +99,21 @@
     .events-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .evento-item {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-left: 4px solid var(--gold);
-      padding: 10px;
+      padding: 9px;
       border-radius: 6px;
-      transition: transform 0.1s;
     }
 
     .evento-item.is-live {
       border-left-color: var(--accent-live);
-      background-color: #243428;
+      background-color: #1f3325;
+      border-color: #27ae60;
     }
 
     .evento-hora {
@@ -126,7 +126,7 @@
     .evento-local {
       font-size: 10px;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -135,7 +135,7 @@
       font-size: 13px;
       color: var(--text-main);
       font-weight: bold;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       line-height: 1.3;
     }
 
@@ -150,7 +150,7 @@
 
     .no-events {
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       color: var(--text-muted);
       font-size: 12px;
     }
@@ -173,133 +173,51 @@
     <div class="filter-container">
       <select id="filtroLocal" class="filter-select" onchange="filtrarEventos()">
         <option value="todos">📍 Todos os Locais</option>
-        <option value="Convento de Cristo">Convento de Cristo</option>
-        <option value="Praça da República">Praça da República</option>
         <option value="Vila Templária">Vila Templária</option>
+        <option value="Praça da República">Praça da República</option>
+        <option value="Convento de Cristo">Convento de Cristo</option>
         <option value="Palco Liça">Palco Liça</option>
         <option value="Palco Principal">Palco Principal</option>
         <option value="Rio Nabão">Rio Nabão</option>
+        <option value="Igreja de São João Baptista">Igreja de São João Baptista</option>
         <option value="Porta de Santiago">Porta de Santiago</option>
+        <option value="Várzea Grande">Várzea Grande</option>
         <option value="Vários Locais">Vários Locais</option>
       </select>
     </div>
 
     <!-- Lista Dinâmica -->
     <div id="lista-eventos" class="events-list">
-      <!-- Inserido dinamicamente via JS -->
+      <!-- Preenchido via JavaScript -->
     </div>
 
   </div>
 
   <script>
-    // Base de dados completa dos eventos da Festa Templária 2026
+    // Base de dados completa com todos os eventos do programa oficial da Festa Templária 2026
     const eventos = [
-      // DIA 9
-      { id: 1, dia: 'dia9', inicio: '2026-07-09T17:00:00', fim: '2026-07-09T19:00:00', local: 'Convento de Cristo', titulo: 'Conferência "A Fundação do Castelo"' },
-      { id: 2, dia: 'dia9', inicio: '2026-07-09T19:00:00', fim: '2026-07-09T20:30:00', local: 'Praça da República', titulo: 'Cortejo de Abertura & Recriação Histórica' },
-      { id: 3, dia: 'dia9', inicio: '2026-07-09T20:30:00', fim: '2026-07-09T23:59:00', local: 'Vila Templária', titulo: 'Jantar Templário (Refeitório)' },
-      { id: 4, dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
-      { id: 5, dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T23:59:00', local: 'Rio Nabão', titulo: 'Fire Dragons (Sessões contínuas)' },
+      // ================= DIAS 09 JULHO =================
+      { dia: 'dia9', inicio: '2026-07-09T14:00:00', fim: '2026-07-09T17:00:00', local: 'Convento de Cristo', titulo: 'Conferência "A Fundação do Castelo"' },
+      { dia: 'dia9', inicio: '2026-07-09T18:00:00', fim: '2026-07-09T19:00:00', local: 'Praça da República', titulo: 'Cortejo de Abertura' },
+      { dia: 'dia9', inicio: '2026-07-09T19:00:00', fim: '2026-07-09T20:00:00', local: 'Palco Principal', titulo: 'Recriação Histórica' },
+      { dia: 'dia9', inicio: '2026-07-09T19:30:00', fim: '2026-07-09T20:00:00', local: 'Vila Templária', titulo: 'Animação Circulante: Serpentina' },
+      { dia: 'dia9', inicio: '2026-07-09T19:30:00', fim: '2026-07-09T23:59:00', local: 'Vila Templária', titulo: 'Jantar Templário (Refeitório)' },
+      { dia: 'dia9', inicio: '2026-07-09T20:00:00', fim: '2026-07-09T20:30:00', local: 'Vila Templária', titulo: 'Animação Circulante: Sacarrabos' },
+      { dia: 'dia9', inicio: '2026-07-09T20:30:00', fim: '2026-07-09T21:00:00', local: 'Vila Templária', titulo: 'Animação Circulante: Patos Bravos' },
+      { dia: 'dia9', inicio: '2026-07-09T21:00:00', fim: '2026-07-09T21:30:00', local: 'Vila Templária', titulo: 'Animação Circulante: Sacarrabos' },
+      { dia: 'dia9', inicio: '2026-07-09T21:30:00', fim: '2026-07-09T22:00:00', local: 'Vila Templária', titulo: 'Animação Circulante: Trebaruna' },
+      { dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
+      { dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
+      { dia: 'dia9', inicio: '2026-07-09T23:00:00', fim: '2026-07-09T23:59:00', local: 'Rio Nabão', titulo: 'Fire Dragons' },
 
-      // DIA 10
-      { id: 6, dia: 'dia10', inicio: '2026-07-10T10:00:00', fim: '2026-07-10T13:00:00', local: 'Vila Templária', titulo: 'Cortejo Templário Infantil' },
-      { id: 7, dia: 'dia10', inicio: '2026-07-10T19:00:00', fim: '2026-07-10T21:00:00', local: 'Palco Liça', titulo: 'Torneio de Armas e O Voo das Aves' },
-      { id: 8, dia: 'dia10', inicio: '2026-07-10T22:00:00', fim: '2026-07-10T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
-      { id: 9, dia: 'dia10', inicio: '2026-07-10T23:00:00', fim: '2026-07-10T23:59:00', local: 'Palco Principal', titulo: 'Concerto Albaluna' },
-
-      // DIA 11
-      { id: 10, dia: 'dia11', inicio: '2026-07-11T10:00:00', fim: '2026-07-11T13:00:00', local: 'Porta de Santiago', titulo: 'Visitas Culturais Encenadas' },
-      { id: 11, dia: 'dia11', inicio: '2026-07-11T16:16:00', fim: '2026-07-11T19:00:00', local: 'Vários Locais', titulo: 'Lugares com História ("Da Utopia à Extinção")' },
-      { id: 12, dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-11T23:59:00', local: 'Vila Templária', titulo: 'Grande Cortejo Noturno' },
-
-      // DIA 12
-      { id: 13, dia: 'dia12', inicio: '2026-07-12T10:00:00', fim: '2026-07-12T13:00:00', local: 'Porta de Santiago', titulo: 'Visitas Culturais Encenadas' },
-      { id: 14, dia: 'dia12', inicio: '2026-07-12T18:00:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Cortejo de Encerramento' }
-    ];
-
-    let abaAtual = 'agora';
-
-    function mudarAba(aba) {
-      abaAtual = aba;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
-      if (aba === 'agora') {
-        document.getElementById('btn-agora').classList.add('active');
-      } else {
-        document.getElementById('btn-' + aba).classList.add('active');
-      }
-      renderizarEventos();
-    }
-
-    function filtrarEventos() {
-      renderizarEventos();
-    }
-
-    function renderizarEventos() {
-      const container = document.getElementById('lista-eventos');
-      const localFiltro = document.getElementById('filtroLocal').value;
-      const agora = new Date();
-
-      let filtrados = eventos;
-
-      // Filtrar por aba
-      if (abaAtual === 'agora') {
-        filtrados = eventos.filter(ev => {
-          const inicio = new Date(ev.inicio);
-          const fim = new Date(ev.fim);
-          return agora >= inicio && agora <= fim;
-        });
-      } else {
-        filtrados = eventos.filter(ev => ev.dia === abaAtual);
-      }
-
-      // Filtrar por local selecionado
-      if (localFiltro !== 'todos') {
-        filtrados = filtrados.filter(ev => ev.local.toLowerCase() === localFiltro.toLowerCase());
-      }
-
-      if (filtrados.length === 0) {
-        container.innerHTML = `<div class="no-events">Nenhum evento encontrado para esta seleção.</div>`;
-        return;
-      }
-
-      let html = '';
-      filtrados.forEach(ev => {
-        const inicio = new Date(ev.inicio);
-        const fim = new Date(ev.fim);
-        
-        let statusHtml = '';
-        let itemClass = 'evento-item';
-
-        const horaInicioStr = inicio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const horaFimStr = fim.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const dataStr = inicio.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
-
-        if (agora >= inicio && agora <= fim) {
-          itemClass += ' is-live';
-          statusHtml = `<span class="status-badge" style="background-color: #27ae60; color: #fff;">🔴 A decorrer agora</span>`;
-        } else if (agora < inicio) {
-          statusHtml = `<span class="status-badge" style="background-color: #444; color: #ccc;">⏳ Em breve</span>`;
-        } else {
-          statusHtml = `<span class="status-badge" style="background-color: #333; color: #777;">✔ Terminado</span>`;
-        }
-
-        html += `
-          <div class="${itemClass}">
-            <div class="evento-hora">${horaInicioStr} - ${horaFimStr} (${dataStr})</div>
-            <div class="evento-local">📍 ${ev.local}</div>
-            <div class="evento-titulo">${ev.titulo}</div>
-            ${statusHtml}
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    // Atualizar periodicamente
-    renderizarEventos();
-    setInterval(renderizarEventos, 30000);
-  </script>
+      // ================= DIAS 10 JULHO =================
+      { dia: 'dia10', inicio: '2026-07-10T10:00:00', fim: '2026-07-10T12:00:00', local: 'Várzea Grande', titulo: 'Cortejo Templário Infantil' },
+      { dia: 'dia10', inicio: '2026-07-10T18:00:00', fim: '2026-07-10T18:30:00', local: 'Vila Templária', titulo: 'Animação: Goliardos Parias, Trebaruna + Voo das Aves' },
+      { dia: 'dia10', inicio: '2026-07-10T18:30:00', fim: '2026-07-10T19:00:00', local: 'Vila Templária', titulo: 'Animação: Teatro Assombrado' },
+      { dia: 'dia10', inicio: '2026-07-10T19:00:00', fim: '2026-07-10T20:00:00', local: 'Palco Liça', titulo: 'Torneio de Armas' },
+      { dia: 'dia10', inicio: '2026-07-10T19:00:00', fim: '2026-07-10T19:30:00', local: 'Vila Templária', titulo: 'Animação: Donzela para Godofredo | Os Fredos' },
+      { dia: 'dia10', inicio: '2026-07-10T19:30:00', fim: '2026-07-10T20:30:00', local: 'Vila Templária', titulo: 'Animação: Vulpes, Trebaruna e Parias' },
+      { dia: 'dia10', inicio: '2026-07-10T19:30:00', fim: '2026-07-10T23:59:00', local: 'Vila Templária', titulo: 'Jantar Templário (Refeitório)' },
+      { dia: 'dia10', inicio: '2026-07-10T20:00:00', fim: '2026-07-10T21:00:00', local: 'Palco
 </body>
 </html>
