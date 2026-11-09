@@ -14,6 +14,7 @@
       --text-main: #ffffff;
       --text-muted: #b5b5b5;
       --accent-live: #2ecc71;
+      --accent-red: #c0392b; /* Vermelho vivo para as abas dos dias */
     }
 
     * {
@@ -62,15 +63,17 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Aba dos Dias Selecionada: Fundo Vermelho e Letras Brancas */
     .tab-btn.active {
-      background: var(--gold) !important;
-      color: #121212 !important;
-      border-color: var(--gold) !important;
+      background: var(--accent-red) !important;
+      color: #ffffff !important;
+      border-color: var(--accent-red) !important;
     }
 
+    /* Aba "Agora" Selecionada: Mantém o Verde Vivo */
     .live-tab.active {
       background: var(--accent-live) !important;
-      color: #fff !important;
+      color: #ffffff !important;
       border-color: var(--accent-live) !important;
     }
 
@@ -193,7 +196,7 @@
 
   <script>
     const eventos = [
-      // ================= DIA 09 JULHO =================
+      // ================= DIAS 09 JULHO (QUINTA) =================
       { dia: 'dia9', inicio: '2026-07-09T14:00:00', fim: '2026-07-09T17:00:00', local: 'Convento de Cristo', titulo: 'Conferência "A Fundação do Castelo"' },
       { dia: 'dia9', inicio: '2026-07-09T18:00:00', fim: '2026-07-09T19:00:00', local: 'Praça da República', titulo: 'Cortejo de Abertura' },
       { dia: 'dia9', inicio: '2026-07-09T19:00:00', fim: '2026-07-09T20:00:00', local: 'Palco Principal', titulo: 'Recriação Histórica' },
@@ -204,42 +207,81 @@
       { dia: 'dia9', inicio: '2026-07-09T21:00:00', fim: '2026-07-09T21:30:00', local: 'Vila Templária', titulo: 'Animação Circulante: Sacarrabos' },
       { dia: 'dia9', inicio: '2026-07-09T21:30:00', fim: '2026-07-09T22:00:00', local: 'Vila Templária', titulo: 'Animação Circulante: Trebaruna' },
       { dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
-      { dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-09T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
+      { dia: 'dia9', inicio: '2026-07-09T22:00:00', fim: '2026-07-10T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
       { dia: 'dia9', inicio: '2026-07-09T23:00:00', fim: '2026-07-09T23:59:00', local: 'Rio Nabão', titulo: 'Fire Dragons' },
 
-      // ================= DIA 10 JULHO =================
+      // ================= DIAS 10 JULHO (SEXTA) =================
       { dia: 'dia10', inicio: '2026-07-10T10:00:00', fim: '2026-07-10T12:00:00', local: 'Várzea Grande', titulo: 'Cortejo Templário Infantil' },
-      { dia: 'dia10', inicio: '2026-07-10T18:00:00', fim: '2026-07-10T18:30:00', local: 'Vila Templária', titulo: 'Animação: Goliardos Parias, Trebaruna + Voo das Aves' },
+      { dia: 'dia10', inicio: '2026-07-10T18:00:00', fim: '2026-07-10T18:30:00', local: 'Vila Templária', titulo: 'Animação: Goliardos + Parias e Trebaruna + Voo das Aves' },
       { dia: 'dia10', inicio: '2026-07-10T18:30:00', fim: '2026-07-10T19:00:00', local: 'Vila Templária', titulo: 'Animação: Teatro Assombrado' },
       { dia: 'dia10', inicio: '2026-07-10T19:00:00', fim: '2026-07-10T20:00:00', local: 'Palco Liça', titulo: 'Torneio de Armas' },
       { dia: 'dia10', inicio: '2026-07-10T19:00:00', fim: '2026-07-10T19:30:00', local: 'Vila Templária', titulo: 'Animação: Donzela para Godofredo | Os Fredos' },
-      { dia: 'dia10', inicio: '2026-07-10T19:30:00', fim: '2026-07-10T20:30:00', local: 'Vila Templária', titulo: 'Animação: Vulpes, Trebaruna e Parias' },
+      { dia: 'dia10', inicio: '2026-07-10T19:30:00', fim: '2026-07-10T20:30:00', local: 'Vila Templária', titulo: 'Animação: Vulpes e Trebaruna e Parias' },
       { dia: 'dia10', inicio: '2026-07-10T19:30:00', fim: '2026-07-10T23:59:00', local: 'Vila Templária', titulo: 'Jantar Templário (Refeitório)' },
       { dia: 'dia10', inicio: '2026-07-10T20:00:00', fim: '2026-07-10T21:00:00', local: 'Palco Liça', titulo: 'O Voo das Aves' },
+      { dia: 'dia10', inicio: '2026-07-10T20:30:00', fim: '2026-07-10T21:00:00', local: 'Vila Templária', titulo: 'Animação: Xamaril | Flora + Padre Adalfredo | Os Fredos' },
+      { dia: 'dia10', inicio: '2026-07-10T21:00:00', fim: '2026-07-10T21:30:00', local: 'Vila Templária', titulo: 'Animação: Teatro Assombrado' },
       { dia: 'dia10', inicio: '2026-07-10T22:00:00', fim: '2026-07-10T23:00:00', local: 'Palco Liça', titulo: 'O Julgamento na Liça' },
-      { dia: 'dia10', inicio: '2026-07-10T22:00:00', fim: '2026-07-10T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
+      { dia: 'dia10', inicio: '2026-07-10T22:00:00', fim: '2026-07-10T22:30:00', local: 'Vila Templária', titulo: 'Animação: Os Escudeiros + Ophiusa | Espetáculo de Fogo' },
+      { dia: 'dia10', inicio: '2026-07-10T22:30:00', fim: '2026-07-10T23:00:00', local: 'Vila Templária', titulo: 'Animação: Mastro - Marsuppianee + Goliardos' },
+      { dia: 'dia10', inicio: '2026-07-10T22:00:00', fim: '2026-07-11T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
+      { dia: 'dia10', inicio: '2026-07-10T23:00:00', fim: '2026-07-10T23:30:00', local: 'Vila Templária', titulo: 'Animação: Teatro Assombrado' },
       { dia: 'dia10', inicio: '2026-07-10T23:00:00', fim: '2026-07-10T23:59:00', local: 'Palco Principal', titulo: 'Concerto Albaluna' },
+      { dia: 'dia10', inicio: '2026-07-10T23:30:00', fim: '2026-07-11T00:00:00', local: 'Vila Templária', titulo: 'Animação: Faquir | Xamaril' },
 
-      // ================= DIA 11 JULHO =================
+      // ================= DIAS 11 JULHO (SÁBADO) =================
       { dia: 'dia11', inicio: '2026-07-11T10:00:00', fim: '2026-07-11T12:00:00', local: 'Porta de Santiago', titulo: 'Visitas Culturais Encenadas' },
+      { dia: 'dia11', inicio: '2026-07-11T13:30:00', fim: '2026-07-11T14:00:00', local: 'Vila Templária', titulo: 'Animação: Medições - Os Fredos' },
+      { dia: 'dia11', inicio: '2026-07-11T14:00:00', fim: '2026-07-11T14:30:00', local: 'Vila Templária', titulo: 'Animação: Goliardos | Flora' },
+      { dia: 'dia11', inicio: '2026-07-11T14:30:00', fim: '2026-07-11T15:00:00', local: 'Palco Liça', titulo: 'Voo das Aves' },
+      { dia: 'dia11', inicio: '2026-07-11T14:30:00', fim: '2026-07-11T15:00:00', local: 'Vila Templária', titulo: 'Animação: Boca de Cão' },
       { dia: 'dia11', inicio: '2026-07-11T15:00:00', fim: '2026-07-11T17:00:00', local: 'Vila Templária', titulo: 'Estátuas Vivas Medievais' },
+      { dia: 'dia11', inicio: '2026-07-11T15:00:00', fim: '2026-07-11T16:00:00', local: 'Vila Templária', titulo: 'Animação: Sacarrabos / Sellium + Donzela para Godofredo | Os Fredos' },
+      { dia: 'dia11', inicio: '2026-07-11T16:00:00', fim: '2026-07-11T16:30:00', local: 'Vila Templária', titulo: 'Animação: Xamaril + Trebaruna e Parias' },
       { dia: 'dia11', inicio: '2026-07-11T16:16:00', fim: '2026-07-11T18:18:00', local: 'Vários Locais', titulo: 'Lugares com História ("Da Utopia à Extinção")' },
+      { dia: 'dia11', inicio: '2026-07-11T16:30:00', fim: '2026-07-11T17:00:00', local: 'Palco Principal', titulo: 'Teatro Assombrado' },
+      { dia: 'dia11', inicio: '2026-07-11T17:00:00', fim: '2026-07-11T17:30:00', local: 'Vila Templária', titulo: 'Animação: Grupo Danças CIRE' },
       { dia: 'dia11', inicio: '2026-07-11T17:00:00', fim: '2026-07-11T19:00:00', local: 'Palco Liça', titulo: 'Torneio de Armas' },
+      { dia: 'dia11', inicio: '2026-07-11T17:00:00', fim: '2026-07-11T18:00:00', local: 'Palco Principal', titulo: 'Gualdins' },
+      { dia: 'dia11', inicio: '2026-07-11T17:30:00', fim: '2026-07-11T18:00:00', local: 'Vila Templária', titulo: 'Animação: Ophiusa' },
+      { dia: 'dia11', inicio: '2026-07-11T18:00:00', fim: '2026-07-11T18:30:00', local: 'Vila Templária', titulo: 'Animação: Voo das Aves' },
+      { dia: 'dia11', inicio: '2026-07-11T18:00:00', fim: '2026-07-11T19:00:00', local: 'Palco Principal', titulo: 'Alforria Boca de Cão' },
+      { dia: 'dia11', inicio: '2026-07-11T18:30:00', fim: '2026-07-11T19:00:00', local: 'Vila Templária', titulo: 'Animação: Xamaril | Flora + Os Fredos' },
       { dia: 'dia11', inicio: '2026-07-11T19:00:00', fim: '2026-07-11T20:30:00', local: 'Palco Liça', titulo: 'A Sentença' },
+      { dia: 'dia11', inicio: '2026-07-11T19:00:00', fim: '2026-07-11T19:30:00', local: 'Vila Templária', titulo: 'Animação: Sacarrabos / Sellium' },
       { dia: 'dia11', inicio: '2026-07-11T19:00:00', fim: '2026-07-11T21:00:00', local: 'Vila Templária', titulo: 'Estátuas Vivas Medievais' },
+      { dia: 'dia11', inicio: '2026-07-11T20:00:00', fim: '2026-07-11T21:00:00', local: 'Palco Principal', titulo: 'Mastro Marsuppianee' },
+      { dia: 'dia11', inicio: '2026-07-11T20:00:00', fim: '2026-07-11T20:30:00', local: 'Vila Templária', titulo: 'Animação: Voo das Aves' },
+      { dia: 'dia11', inicio: '2026-07-11T20:30:00', fim: '2026-07-11T21:00:00', local: 'Vila Templária', titulo: 'Animação: Os Fredos' },
+      { dia: 'dia11', inicio: '2026-07-11T21:00:00', fim: '2026-07-11T22:00:00', local: 'Palco Principal', titulo: 'Teatro Assombrado' },
       { dia: 'dia11', inicio: '2026-07-11T21:00:00', fim: '2026-07-11T22:30:00', local: 'Palco Liça', titulo: 'Torneio de Armas' },
+      { dia: 'dia11', inicio: '2026-07-11T21:30:00', fim: '2026-07-11T22:00:00', local: 'Vila Templária', titulo: 'Animação: Goliardos + Trebaruna' },
+      { dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-11T22:30:00', local: 'Vila Templária', titulo: 'Animação: Vulpes' },
       { dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-11T23:59:00', local: 'Vila Templária', titulo: 'Grande Cortejo Noturno' },
-      { dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-11T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
+      { dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-12T00:00:00', local: 'Igreja de São João Baptista', titulo: 'A Carta de Gualdim Pais (Videomapping)' },
+      { dia: 'dia11', inicio: '2026-07-11T22:30:00', fim: '2026-07-11T23:00:00', local: 'Vila Templária', titulo: 'Animação: Xamaril | Flora' },
       { dia: 'dia11', inicio: '2026-07-11T22:30:00', fim: '2026-07-11T23:59:00', local: 'Palco Liça', titulo: 'Espetáculo de Fogo Ophiussa' },
-      { dia: 'dia11', inicio: '2026-07-11T00:00:00', fim: '2026-07-12T01:00:00', local: 'Rio Nabão', titulo: 'Fire Dragons' },
+      { dia: 'dia11', inicio: '2026-07-11T23:00:00', fim: '2026-07-12T00:00:00', local: 'Palco Principal', titulo: 'Teatro Assombrado' },
+      { dia: 'dia11', inicio: '2026-07-12T00:00:00', fim: '2026-07-12T01:00:00', local: 'Rio Nabão', titulo: 'Fire Dragons' },
 
-      // ================= DIA 12 JULHO =================
+      // ================= DIAS 12 JULHO (DOMINGO) =================
       { dia: 'dia12', inicio: '2026-07-12T10:00:00', fim: '2026-07-12T12:00:00', local: 'Porta de Santiago', titulo: 'Visitas Culturais Encenadas' },
+      { dia: 'dia12', inicio: '2026-07-12T13:30:00', fim: '2026-07-12T14:00:00', local: 'Vila Templária', titulo: 'Animação: Vulpes + Trebaruna' },
+      { dia: 'dia12', inicio: '2026-07-12T14:00:00', fim: '2026-07-12T15:00:00', local: 'Palco Principal', titulo: 'Teatro Assombrado' },
+      { dia: 'dia12', inicio: '2026-07-12T14:30:00', fim: '2026-07-12T15:00:00', local: 'Vila Templária', titulo: 'Animação: Voo das Aves + Goliardos | Flora' },
       { dia: 'dia12', inicio: '2026-07-12T15:00:00', fim: '2026-07-12T17:00:00', local: 'Vila Templária', titulo: 'Estátuas Vivas Medievais' },
+      { dia: 'dia12', inicio: '2026-07-12T15:00:00', fim: '2026-07-12T15:30:00', local: 'Vila Templária', titulo: 'Animação: Xamaril + Trebaruna e Parias' },
       { dia: 'dia12', inicio: '2026-07-12T15:00:00', fim: '2026-07-12T17:00:00', local: 'Palco Liça', titulo: 'A Sentença' },
+      { dia: 'dia12', inicio: '2026-07-12T16:00:00', fim: '2026-07-12T17:00:00', local: 'Palco Principal', titulo: 'Teatro Assombrado' },
       { dia: 'dia12', inicio: '2026-07-12T16:16:00', fim: '2026-07-12T18:18:00', local: 'Vários Locais', titulo: 'Lugares com História ("Da Utopia à Extinção")' },
+      { dia: 'dia12', inicio: '2026-07-12T17:00:00', fim: '2026-07-12T17:30:00', local: 'Vila Templária', titulo: 'Animação: Sacarrabos / Sellium' },
+      { dia: 'dia12', inicio: '2026-07-12T17:00:00', fim: '2026-07-12T18:00:00', local: 'Palco Principal', titulo: 'Ophiusa' },
+      { dia: 'dia12', inicio: '2026-07-12T17:30:00', fim: '2026-07-12T18:00:00', local: 'Vila Templária', titulo: 'Animação: Marsuppianee' },
       { dia: 'dia12', inicio: '2026-07-12T17:30:00', fim: '2026-07-12T19:30:00', local: 'Palco Liça', titulo: 'Torneio de Armas' },
+      { dia: 'dia12', inicio: '2026-07-12T18:00:00', fim: '2026-07-12T18:30:00', local: 'Vila Templária', titulo: 'Animação: Voo das Aves + Escudeiros' },
       { dia: 'dia12', inicio: '2026-07-12T18:00:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Cortejo de Encerramento' },
+      { dia: 'dia12', inicio: '2026-07-12T18:30:00', fim: '2026-07-12T19:00:00', local: 'Vila Templária', titulo: 'Animação: Xamaril + Trebaruna' },
+      { dia: 'dia12', inicio: '2026-07-12T19:30:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Animação: Ophiusa | Goliardos' },
       { dia: 'dia12', inicio: '2026-07-12T19:30:00', fim: '2026-07-12T21:00:00', local: 'Palco Liça', titulo: 'Marsuppianee' }
     ];
 
@@ -247,15 +289,10 @@
 
     function mudarAba(aba, elemento) {
       abaAtual = aba;
-      
-      // Remove a classe active de todos os botões
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
-      // Adiciona ao botão clicado
       if (elemento) {
         elemento.classList.add('active');
       }
-      
       renderizarEventos();
     }
 
@@ -320,12 +357,10 @@
       container.innerHTML = html;
     }
 
-    // Executa ao carregar
     window.onload = function() {
       renderizarEventos();
     };
 
-    // Atualiza periodicamente
     setInterval(renderizarEventos, 30000);
   </script>
 </body>
