@@ -14,7 +14,7 @@
       --text-main: #ffffff;
       --text-muted: #b5b5b5;
       --accent-live: #2ecc71;
-      --accent-red: #c0392b;
+      --accent-red: #c0392b; /* Vermelho vivo para as abas dos dias */
     }
 
     * {
@@ -45,8 +45,6 @@
       margin-bottom: 8px;
       overflow-x: auto;
       padding-bottom: 2px;
-      position: relative;
-      z-index: 10;
     }
 
     .tab-btn {
@@ -64,15 +62,16 @@
       transition: background 0.2s ease, color 0.2s ease;
       -webkit-tap-highlight-color: transparent;
       font-family: sans-serif;
-      user-select: none;
     }
 
+    /* Aba dos Dias Selecionada: Fundo Vermelho e Letras Brancas */
     .tab-btn.active {
       background: var(--accent-red) !important;
       color: #ffffff !important;
       border-color: var(--accent-red) !important;
     }
 
+    /* Aba "Agora" Selecionada: Mantém o Verde Vivo */
     .live-tab.active {
       background: var(--accent-live) !important;
       color: #ffffff !important;
@@ -171,18 +170,18 @@
 
   <div class="container">
     
-    <!-- Abas de Navegação (Sem onclick inline) -->
-    <div class="tabs-container" id="tabsContainer">
-      <button type="button" class="tab-btn live-tab active" data-aba="agora">🔴 Agora</button>
-      <button type="button" class="tab-btn" data-aba="dia9">09 Jul</button>
-      <button type="button" class="tab-btn" data-aba="dia10">10 Jul</button>
-      <button type="button" class="tab-btn" data-aba="dia11">11 Jul</button>
-      <button type="button" class="tab-btn" data-aba="dia12">12 Jul</button>
+    <!-- Abas de Navegação -->
+    <div class="tabs-container">
+      <button type="button" class="tab-btn live-tab active" onclick="mudarAba('agora', this)">🔴 Agora</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia9', this)">09 Jul</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia10', this)">10 Jul</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia11', this)">11 Jul</button>
+      <button type="button" class="tab-btn" onclick="mudarAba('dia12', this)">12 Jul</button>
     </div>
 
-    <!-- Filtro por Local (Sem onchange inline) -->
+    <!-- Filtro por Local -->
     <div class="filter-container">
-      <select id="filtroLocal" class="filter-select">
+      <select id="filtroLocal" class="filter-select" onchange="renderizarEventos()">
         <option value="todos">📍 Todos os Locais</option>
         <option value="Vila Templária">Vila Templária</option>
         <option value="Praça da República">Praça da República</option>
@@ -263,6 +262,15 @@
 
     let abaAtual = 'agora';
 
+    function mudarAba(aba, elemento) {
+      abaAtual = aba;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      if (elemento) {
+        elemento.classList.add('active');
+      }
+      renderizarEventos();
+    }
+
     function renderizarEventos() {
       const container = document.getElementById('lista-eventos');
       const selectElement = document.getElementById('filtroLocal');
@@ -324,28 +332,11 @@
       container.innerHTML = html;
     }
 
-    // Inicializa os cliques nas abas e no seletor de local via JavaScript puro
-    document.addEventListener('DOMContentLoaded', function() {
-      const botoes = document.querySelectorAll('.tab-btn');
-      botoes.forEach(btn => {
-        btn.addEventListener('click', function() {
-          botoes.forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          abaAtual = this.getAttribute('data-aba');
-          renderizarEventos();
-        });
-      });
-
-      const selectLocal = document.getElementById('filtroLocal');
-      if (selectLocal) {
-        selectLocal.addEventListener('change', renderizarEventos);
-      }
-
+    window.onload = function() {
       renderizarEventos();
-    });
+    };
 
     setInterval(renderizarEventos, 30000);
   </script>
 </body>
 </html>
-      {
