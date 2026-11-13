@@ -45,6 +45,8 @@
       margin-bottom: 8px;
       overflow-x: auto;
       padding-bottom: 2px;
+      position: relative;
+      z-index: 10;
     }
 
     .tab-btn {
@@ -62,6 +64,7 @@
       transition: background 0.2s ease, color 0.2s ease;
       -webkit-tap-highlight-color: transparent;
       font-family: sans-serif;
+      user-select: none;
     }
 
     .tab-btn.active {
@@ -168,18 +171,18 @@
 
   <div class="container">
     
-    <!-- Abas de Navegação -->
-    <div class="tabs-container">
-      <button type="button" class="tab-btn live-tab active" onclick="mudarAba('agora', this)">🔴 Agora</button>
-      <button type="button" class="tab-btn" onclick="mudarAba('dia9', this)">09 Jul</button>
-      <button type="button" class="tab-btn" onclick="mudarAba('dia10', this)">10 Jul</button>
-      <button type="button" class="tab-btn" onclick="mudarAba('dia11', this)">11 Jul</button>
-      <button type="button" class="tab-btn" onclick="mudarAba('dia12', this)">12 Jul</button>
+    <!-- Abas de Navegação (Sem onclick inline) -->
+    <div class="tabs-container" id="tabsContainer">
+      <button type="button" class="tab-btn live-tab active" data-aba="agora">🔴 Agora</button>
+      <button type="button" class="tab-btn" data-aba="dia9">09 Jul</button>
+      <button type="button" class="tab-btn" data-aba="dia10">10 Jul</button>
+      <button type="button" class="tab-btn" data-aba="dia11">11 Jul</button>
+      <button type="button" class="tab-btn" data-aba="dia12">12 Jul</button>
     </div>
 
-    <!-- Filtro por Local -->
+    <!-- Filtro por Local (Sem onchange inline) -->
     <div class="filter-container">
-      <select id="filtroLocal" class="filter-select" onchange="renderizarEventos()">
+      <select id="filtroLocal" class="filter-select">
         <option value="todos">📍 Todos os Locais</option>
         <option value="Vila Templária">Vila Templária</option>
         <option value="Praça da República">Praça da República</option>
@@ -241,4 +244,108 @@
       { dia: 'dia11', inicio: '2026-07-11T18:18:00', fim: '2026-07-11T18:33:00', local: 'Vários Locais', titulo: 'Lugares com História: "Da Utopia à Extinção" (18h18)' },
       { dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-11T23:30:00', local: 'Centro Histórico', titulo: 'Grande Cortejo Noturno (Castelo – Olivais)' },
       { dia: 'dia11', inicio: '2026-07-11T22:00:00', fim: '2026-07-12T00:00:00', local: 'Igreja de São João Baptista', titulo: 'Videomapping: "A Carta de Gualdim Pais" (Sessões contínuas)' },
+      { dia: 'dia11', inicio: '2026-07-12T00:00:00', fim: '2026-07-12T01:00:00', local: 'Rio Nabão', titulo: 'Fire Dragons' },
+
+      // ================= DOMINGO | 12 JULHO =================
+      { dia: 'dia12', inicio: '2026-07-12T10:00:00', fim: '2026-07-12T12:00:00', local: 'Porta de Santiago', titulo: 'Visita Encenada: "1160 - O Dia em que Nasceu o Castelo"' },
+      { dia: 'dia12', inicio: '2026-07-12T12:00:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Vila Templária: Acampamentos, Falcoaria, Ofícios e Artesanato' },
+      { dia: 'dia12', inicio: '2026-07-12T12:00:00', fim: '2026-07-12T20:00:00', local: 'Central Elétrica', titulo: 'Casa da Tortura' },
+      { dia: 'dia12', inicio: '2026-07-12T12:00:00', fim: '2026-07-12T20:00:00', local: 'Zona das Tabernas', titulo: 'Tabernas e Restauração' },
+      { dia: 'dia12', inicio: '2026-07-12T15:00:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Castelo dos Escudeiros e Carrossel Medieval' },
+      { dia: 'dia12', inicio: '2026-07-12T15:00:00', fim: '2026-07-12T20:00:00', local: 'Vila Templária', titulo: 'Estátuas Vivas Medievais' },
+      { dia: 'dia12', inicio: '2026-07-12T16:16:00', fim: '2026-07-12T16:31:00', local: 'Vários Locais', titulo: 'Lugares com História: "Da Utopia à Extinção" (16h16)' },
+      { dia: 'dia12', inicio: '2026-07-12T16:46:00', fim: '2026-07-12T17:01:00', local: 'Vários Locais', titulo: 'Lugares com História: "Da Utopia à Extinção" (16h46)' },
+      { dia: 'dia12', inicio: '2026-07-12T17:17:00', fim: '2026-07-12T17:32:00', local: 'Vários Locais', titulo: 'Lugares com História: "Da Utopia à Extinção" (17h17)' },
+      { dia: 'dia12', inicio: '2026-07-12T17:47:00', fim: '2026-07-12T18:02:00', local: 'Vários Locais', titulo: 'Lugares com História: "Da Utopia à Extinção" (17h47)' },
+      { dia: 'dia12', inicio: '2026-07-12T18:18:00', fim: '2026-07-12T18:33:00', local: 'Vários Locais', titulo: 'Lugares com História: "Da Utopia à Extinção" (18h18)' },
+      { dia: 'dia12', inicio: '2026-07-12T18:00:00', fim: '2026-07-12T20:00:00', local: 'Praça da República', titulo: 'Cortejo de Encerramento (Vila Templária – Praça da República)' }
+    ];
+
+    let abaAtual = 'agora';
+
+    function renderizarEventos() {
+      const container = document.getElementById('lista-eventos');
+      const selectElement = document.getElementById('filtroLocal');
+      const localFiltro = selectElement ? selectElement.value : 'todos';
+      const agora = new Date();
+
+      let filtrados = eventos;
+
+      if (abaAtual === 'agora') {
+        filtrados = eventos.filter(ev => {
+          const inicio = new Date(ev.inicio);
+          const fim = new Date(ev.fim);
+          return agora >= inicio && agora <= fim;
+        });
+      } else {
+        filtrados = eventos.filter(ev => ev.dia === abaAtual);
+      }
+
+      if (localFiltro !== 'todos') {
+        filtrados = filtrados.filter(ev => ev.local.toLowerCase() === localFiltro.toLowerCase());
+      }
+
+      if (filtrados.length === 0) {
+        container.innerHTML = `<div class="no-events">Nenhum evento encontrado para esta seleção.</div>`;
+        return;
+      }
+
+      let html = '';
+      filtrados.forEach(ev => {
+        const inicio = new Date(ev.inicio);
+        const fim = new Date(ev.fim);
+        
+        let statusHtml = '';
+        let itemClass = 'evento-item';
+
+        const horaInicioStr = inicio.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const horaFimStr = fim.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const dataStr = inicio.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
+
+        if (agora >= inicio && agora <= fim) {
+          itemClass += ' is-live';
+          statusHtml = `<span class="status-badge" style="background-color: #27ae60; color: #fff;">🔴 A decorrer agora</span>`;
+        } else if (agora < inicio) {
+          statusHtml = `<span class="status-badge" style="background-color: #383838; color: #cccccc;">⏳ Em breve</span>`;
+        } else {
+          statusHtml = `<span class="status-badge" style="background-color: #2a2a2a; color: #777777;">✔ Terminado</span>`;
+        }
+
+        html += `
+          <div class="${itemClass}">
+            <div class="evento-hora">${horaInicioStr} - ${horaFimStr} (${dataStr})</div>
+            <div class="evento-local">📍 ${ev.local}</div>
+            <div class="evento-titulo">${ev.titulo}</div>
+            ${statusHtml}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Inicializa os cliques nas abas e no seletor de local via JavaScript puro
+    document.addEventListener('DOMContentLoaded', function() {
+      const botoes = document.querySelectorAll('.tab-btn');
+      botoes.forEach(btn => {
+        btn.addEventListener('click', function() {
+          botoes.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          abaAtual = this.getAttribute('data-aba');
+          renderizarEventos();
+        });
+      });
+
+      const selectLocal = document.getElementById('filtroLocal');
+      if (selectLocal) {
+        selectLocal.addEventListener('change', renderizarEventos);
+      }
+
+      renderizarEventos();
+    });
+
+    setInterval(renderizarEventos, 30000);
+  </script>
+</body>
+</html>
       {
